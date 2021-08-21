@@ -1,6 +1,6 @@
-package client;
+package Client;
 
-import core.VaccineRegServiceDetails;
+import Core.VaccineRegServiceDetails;
 
 import java.io.*;
 import java.net.Socket;
@@ -21,20 +21,26 @@ public class VaccineServiceClient
             InputStream in= dataSocket.getInputStream();
             Scanner input = new Scanner(new InputStreamReader(in));
 
-            Scanner Keyboard = new Scanner (System.in);
+            Scanner keyboard = new Scanner (System.in);
 
             String message = "";
+            Scanner kb = new Scanner(System.in);
+
             while (!message.equals(VaccineRegServiceDetails.CLOSE))
             {
                 displayMenu();
-                int choice = getNumber(Keyboard);
+
+                int choice = getNumber(keyboard);
                 String response = "";
 
                 if(choice >0&& choice <3)
                 {
                     switch(choice)
                     {
-                        case 1:
+                        case 0:
+                            message=VaccineRegServiceDetails.CLOSE;
+
+
 
                     }
                 }
@@ -54,11 +60,10 @@ public class VaccineServiceClient
         }
     }
 //gets valid number from user
-    private static int getNumber(Scanner keyboard)
+    public static int getNumber(Scanner keyboard)
     {
         boolean numberEntered = false;
-        int number =0;
-
+        int number = 0;
         while(!numberEntered)
         {
             try
@@ -68,7 +73,7 @@ public class VaccineServiceClient
             }
             catch(InputMismatchException e)
             {
-                System.out.println("please enter a valid number");
+                System.out.println("Please enter a number: ");
                 keyboard.nextLine();
             }
         }
@@ -76,8 +81,10 @@ public class VaccineServiceClient
         return number;
     }
 
-    private static void displayMenu()
+    public static void displayMenu()
     {
-        System.out.println();
+        System.out.println("0) QUIT_APPLICATION");
+        System.out.println("1) REGISTER");
+        System.out.println("2) LOGIN");
     }
 }

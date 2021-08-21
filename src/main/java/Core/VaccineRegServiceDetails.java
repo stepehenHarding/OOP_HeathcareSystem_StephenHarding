@@ -1,12 +1,14 @@
-package core;
+package Core;
 
 public class VaccineRegServiceDetails
 {
 
-    public static final int LISTENING_PORT = 50020;
+    public static final int LISTENING_PORT = 50025;
+    public static final String HOSTNAME = "localhost";
     //Breaking characters
-    public static final String COMMAND_SEPARATOR="%";
+    public static final String COMMAND_SEPARATOR="%%";
     //command Strings
+    public static final String REGISTER = "REGISTER";
     public static final String REGISTERED = "REGISTERED";
     public static final String REG_FAILED = "REG FAILED";
     public static final String LOGIN_SUCCESSFUL="LOGGED IN";
