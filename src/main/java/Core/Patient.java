@@ -66,7 +66,7 @@ public class Patient {
     @Override
     public String toString()
     {
-        return "Patient{" +
+        return "Patientw{" +
                 "user_id=" + user_id +
                 ", dateOfBirth='" + email + '\'' +
                 ", password='" + password + '\'' +

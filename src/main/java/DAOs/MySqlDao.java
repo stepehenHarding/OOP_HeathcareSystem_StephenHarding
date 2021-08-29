@@ -9,10 +9,9 @@ import java.sql.SQLException;
 public class MySqlDao {
     public Connection getConnection() throws DAOException {
         String driver = "com.mysql.cj.jdbc.Driver";
-        String url = "jdbc:mysql://localhost:3306/OOP_RepeatCa_StephenHarding";
+        String url = "jdbc:mysql://localhost:3306/oop_repeat_2021_stephen_harding";
         String username = "root";
         String password = "";
-
         Connection connection = null;
 
         try {

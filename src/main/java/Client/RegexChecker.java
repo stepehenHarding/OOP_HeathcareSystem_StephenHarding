@@ -13,4 +13,15 @@ public class RegexChecker {
 
         return m.matches();
     }
+
+    public static boolean isValidPassword(String password)
+    {
+        String regex ="(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%^&+=])(?=\\S+$).{8,}";
+        Pattern p = Pattern.compile(regex);
+        String password1 =""+password;
+        Matcher m =p.matcher(password1);
+
+        return m.matches();
+
+    }
 }
