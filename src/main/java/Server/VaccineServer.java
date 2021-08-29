@@ -1,6 +1,6 @@
 package Server;
 
-import Core.VaccineRegServiceDetails;
+import Core.VaccineRegService;
 
 import java.io.IOException;
 import java.net.ServerSocket;
@@ -15,7 +15,7 @@ public class VaccineServer
 
         try
         {
-            listeningSocket = new ServerSocket(VaccineRegServiceDetails.LISTENING_PORT);
+            listeningSocket = new ServerSocket(VaccineRegService.LISTENING_PORT);
             ThreadGroup clientGroup = new ThreadGroup("Client threads");
             //Place more emphasis on accepting clients than processing them
             //by setting their priority to be one less than the main thread

@@ -1,6 +1,6 @@
 package Server;
 
-import Core.VaccineRegServiceDetails;
+import Core.VaccineRegService;
 import Client.Request;
 
 import java.io.IOException;
@@ -43,9 +43,9 @@ public class VaccineServiceThread extends Thread {
                 System.out.println("Received message " + incomingMessage);
 
                 //process the input and generate response
-                String[] components = incomingMessage.split(VaccineRegServiceDetails.COMMAND_SEPARATOR);
+                String[] components = incomingMessage.split(VaccineRegService.COMMAND_SEPARATOR);
 
-                if (components[0].equals(new Request(VaccineRegServiceDetails.REGISTER).toString())) {
+                if (components[0].equals(new Request(VaccineRegService.REGISTER).toString())) {
                     String ValidEvent = input.nextLine();
                     System.out.println("Recieved Message: " + ValidEvent);
 

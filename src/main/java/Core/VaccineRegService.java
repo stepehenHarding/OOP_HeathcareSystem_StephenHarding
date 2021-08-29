@@ -1,6 +1,6 @@
 package Core;
 
-public class VaccineRegServiceDetails
+public class VaccineRegService
 {
 
     public static final int LISTENING_PORT = 50025;

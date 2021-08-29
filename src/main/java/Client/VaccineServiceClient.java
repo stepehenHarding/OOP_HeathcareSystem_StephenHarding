@@ -1,6 +1,6 @@
 package Client;
 
-import Core.VaccineRegServiceDetails;
+import Core.VaccineRegService;
 
 import java.io.*;
 import java.net.Socket;
@@ -15,7 +15,7 @@ public class VaccineServiceClient
         Socket dataSocket = null;
         try
         {
-            dataSocket = new Socket("localhost", VaccineRegServiceDetails.LISTENING_PORT);
+            dataSocket = new Socket("localhost", VaccineRegService.LISTENING_PORT);
             OutputStream out =dataSocket.getOutputStream();
             PrintWriter output = new PrintWriter(new OutputStreamWriter(out));
             InputStream in= dataSocket.getInputStream();
@@ -26,10 +26,8 @@ public class VaccineServiceClient
             String message = "";
             Scanner kb = new Scanner(System.in);
 
-            while (!message.equals(VaccineRegServiceDetails.CLOSE))
+            while (!message.equals(VaccineRegService.CLOSE))
             {
-                displayMenu();
-
                 int choice = getNumber(keyboard);
                 String response = "";
 
@@ -38,7 +36,7 @@ public class VaccineServiceClient
                     switch(choice)
                     {
                         case 0:
-                            message=VaccineRegServiceDetails.CLOSE;
+                            message=VaccineRegService.CLOSE;
 
 
 
@@ -81,10 +79,5 @@ public class VaccineServiceClient
         return number;
     }
 
-    public static void displayMenu()
-    {
-        System.out.println("0) QUIT_APPLICATION");
-        System.out.println("1) REGISTER");
-        System.out.println("2) LOGIN");
-    }
+
 }
