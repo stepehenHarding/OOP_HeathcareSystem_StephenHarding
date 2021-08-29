@@ -15,7 +15,7 @@ public class VaccineServer
 
         try
         {
-            listeningSocket = new ServerSocket(VaccineRegService.LISTENING_PORT);
+            listeningSocket = new ServerSocket(8080);
             ThreadGroup clientGroup = new ThreadGroup("Client threads");
             //Place more emphasis on accepting clients than processing them
             //by setting their priority to be one less than the main thread

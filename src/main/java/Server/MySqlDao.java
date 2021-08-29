@@ -1,4 +1,4 @@
-package DAOs;
+package Server;
 import Core.Colours;
 import Server.DAOException;
 

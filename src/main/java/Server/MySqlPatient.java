@@ -1,18 +1,83 @@
-package DAOs;
+package Server;
 
 import Core.Colours;
 import Core.Patient;
 import Server.DAOException;
+import Server.MySqlDao;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Connection;
 
-import java.sql.*;
-import java.util.HashMap;
 
-public class MySqlPatient extends MySqlDao
-{
+public class MySqlPatient extends MySqlDao implements PatientDaoInterface {
 
+    @Override
+    public boolean login(Patient p) throws DAOException {
+        Connection con = null;
+        PreparedStatement ps = null;
+        ResultSet rs = null;
+        Patient u = null;
+        boolean login = false;
+
+        try
+        {
+            con = this.getConnection();
+
+            String query = "SELECT PASSWORD FROM EMAIL WHERE email = ?";
+            ps = con.prepareStatement(query);
+            ps.setString(1, p.getEmail());
+
+
+            //Using a PreparedStatement to execute SQL...
+            rs = ps.executeQuery();
+            while (rs.next())
+            {
+
+
+                String password = rs.getString("PASSWORD");
+
+                u = new Patient(p.getUser_id(),p.getEmail(), password);
+
+            }
+
+            if (p.equals(u))
+            {
+                login = true;
+            }
+        } catch (SQLException e)
+        {
+            throw new DAOException(""+e.getMessage());
+        } finally
+        {
+            try
+            {
+                if (rs != null)
+                {
+                    rs.close();
+                }
+                if (ps != null)
+                {
+                    ps.close();
+                }
+                if (con != null)
+                {
+                    freeConnection(con);
+                }
+            } catch (SQLException e)
+            {
+                throw new DAOException(""+e.getMessage());
+            }
+        }
+
+
+        return login;
+    }
+
+    @Override
     public boolean registerPatient(Patient newPatient) throws DAOException {
-    if (!checkIfPatientExists(newPatient))
-    {
+
+
         Connection connection = null;
         PreparedStatement ps = null;
         ResultSet rs = null;
@@ -51,12 +116,13 @@ public class MySqlPatient extends MySqlDao
                 throw new DAOException(Colours.RED + "There was an error in registerStudent() finally " + se.getMessage() + Colours.RESET);
             }
         }
-    }return false;
-}
+    }
 
 
-    public boolean checkIfPatientExists(Patient newPatient) throws DAOException
-    {
+
+
+    @Override
+    public boolean isregistered(Patient newPatient) throws DAOException {
         Connection connection=null;
         PreparedStatement ps=null;
         ResultSet rs = null;
@@ -66,7 +132,7 @@ public class MySqlPatient extends MySqlDao
             connection= this.getConnection();
             String query= "select * from user where email = ?";
             ps = connection.prepareStatement(query);
-            ps.setInt(1, newPatient.getUser_id());
+            ps.setString(1, newPatient.getEmail());
 
             rs =ps.executeQuery();
 
@@ -101,64 +167,4 @@ public class MySqlPatient extends MySqlDao
         return false;
     }
 
-
-
-    public Patient findPatientByEmail(String email) throws DAOException
-    {
-        Connection connection = null;
-        PreparedStatement ps = null;
-        ResultSet rs = null;
-        Patient returnedPatient = null;
-
-        try
-        {
-            connection = this.getConnection();
-
-            String query = "select * from user where email = ?";
-            ps = connection.prepareStatement(query);
-            ps.setString(1, email);
-            rs = ps.executeQuery();
-
-            if(rs.next())
-            {
-                int dbEmail = rs.getInt("email");
-                String dbUser_id = rs.getString("user_id");
-
-
-                String dbPassword = rs.getString("password");
-
-                Patient readInPatient = new Patient(dbEmail,dbUser_id,dbPassword);
-            }
-            else{
-                System.out.println(Colours.RED + "student cannot be found"+ Colours.RESET);
-            }
-        }
-        catch (SQLException se)
-        {
-            throw new DAOException(Colours.RED + "There was an error in findPatientByEmail() " + se.getMessage() + Colours.RESET);
-        }
-        finally
-        {
-            try
-            {
-                if(rs != null)
-                {
-                    rs.close();
-                }
-                if(ps != null)
-                {
-                    ps.close();
-                }
-                if(connection != null)
-                {
-                    freeConnection(connection);
-                }
-            }
-            catch (SQLException se)
-            {
-                throw new DAOException(Colours.RED + "There was an error findPatientByEmail() finally " + se.getMessage() + Colours.RESET);
-            }
-        }
-        return returnedPatient;
-    }
 }
