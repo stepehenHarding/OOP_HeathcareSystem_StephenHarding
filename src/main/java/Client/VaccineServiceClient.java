@@ -1,5 +1,6 @@
 package Client;
 
+import Core.Colours;
 import Core.VaccineRegService;
 
 import java.io.*;
@@ -10,73 +11,101 @@ import java.util.Scanner;
 
 public class VaccineServiceClient
 {
-    public static void main(String[] args)
+    private static Scanner sc= new Scanner(System.in);
+
+    public static void main(String[] args){
+        System.out.println("Welcome to the Vaccine Service");
+        VaccineServiceClient client = new VaccineServiceClient();
+        client.start();
+
+    }
+    public  void start()
     {
-        Socket dataSocket = null;
-        try
-        {
-            dataSocket = new Socket("localhost", VaccineRegService.LISTENING_PORT);
-            OutputStream out =dataSocket.getOutputStream();
-            PrintWriter output = new PrintWriter(new OutputStreamWriter(out));
-            InputStream in= dataSocket.getInputStream();
-            Scanner input = new Scanner(new InputStreamReader(in));
+        Scanner in = new Scanner(System.in);
+        try {
 
-            Scanner keyboard = new Scanner (System.in);
+            Socket dataSocket = new Socket("localhost", 8080);
+            System.out.println("connection successful");
+            OutputStream os = dataSocket.getOutputStream();
+            PrintWriter socketWriter = new PrintWriter(os,true);
 
-            String message = "";
-            Scanner kb = new Scanner(System.in);
+            Scanner socketReader = new Scanner(dataSocket.getInputStream());
 
-            while (!message.equals(VaccineRegService.CLOSE))
-            {
-                int choice = getNumber(keyboard);
-                String response = "";
+            doMenuLoop(socketWriter,socketReader);
 
-                if(choice >0&& choice <3)
-                {
-                    switch(choice)
-                    {
-                        case 0:
-                            message=VaccineRegService.CLOSE;
-
-
-
-                    }
-                }
-                else
-                {
-                    System.out.println("please enter a valid number");
-                }
-            }
-        }
-        catch (UnknownHostException e)
-        {
-            e.printStackTrace();
         }
         catch (IOException e)
         {
-            e.printStackTrace();
+            System.out.println("IOException"+e);
         }
     }
-//gets valid number from user
-    public static int getNumber(Scanner keyboard)
-    {
-        boolean numberEntered = false;
-        int number = 0;
-        while(!numberEntered)
-        {
-            try
-            {
-                number = keyboard.nextInt();
-                numberEntered = true;
+
+    private void doMenuLoop(PrintWriter socketWriter, Scanner socketReader) {
+
+        printMainMenu();
+        LoginMenu menuOption =getNumber();
+
+        while (menuOption != LoginMenu.QUIT_APPLICATION){
+            switch (menuOption){
+                case REGISTER:
+                    System.out.println("Register");
+                    register(socketWriter,socketReader);
+                    break;
+
+                case LOGIN:
+                    System.out.println("LOGIN");
+                    login(socketWriter,socketReader);
+                    break;
             }
-            catch(InputMismatchException e)
-            {
-                System.out.println("Please enter a number: ");
-                keyboard.nextLine();
-            }
+            printMainMenu();
+            menuOption =getNumber();
         }
-        keyboard.nextLine();
-        return number;
+        System.out.println("Quitting Application");
+    }
+
+    private void printMainMenu()
+    {
+        for(int i=0;i<LoginMenu.values().length;i++)
+        {
+            System.out.println("\t"+ Colours.GREEN+i+"."+MainMenu.values()[i].toString()+Colours.RESET);
+        }
+        System.out.println("please enter an option (0 to exit)");
+    }
+
+    //gets valid main menu number from user
+    private LoginMenu getNumber()
+    {
+        int option= sc.nextInt();
+        LoginMenu menuOption = null;
+        if(option <0|| option >2)
+        {
+            printMainMenu();
+        }
+        else
+        {
+            menuOption =LoginMenu.values()[option];
+        }
+        return menuOption;
+    }
+
+    private void doLoginMenuLoop()
+    {
+
+    }
+
+    private void printLoginMenu()
+    {
+
+    }
+
+    private void login(PrintWriter socketWriter, Scanner socketReader)
+    {
+
+    }
+
+    private void register(PrintWriter socketWriter, Scanner socketReader)
+    {
+
     }
 
 
